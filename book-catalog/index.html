@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Library</title>
+  <link rel="icon" type="image/svg+xml" href="public/book-and-person-summer-svgrepo-com.svg" />
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__logo">
+      <img src="src/assets/book.svg" alt="Logo" class="header__logo-icon" />
+      <div class="header__brand">
+        <span class="header__brand-name">The Library</span>
+        <span class="header__brand-sub">Discover your next favorite book</span>
+      </div>
+    </div>
+    <!-- Theme.js рендерит кнопку сюда -->
+    <div id="theme-toggle-container"></div>
+  </header>
+
+  <section class="hero">
+    <h1 class="hero__title">Discover Your Next Great Read</h1>
+    <p class="hero__subtitle">
+      Search millions of books, build your personal library,
+      and never lose track of what to read next.
+    </p>
+    <!-- Search.js рендерит форму поиска сюда -->
+    <div id="search-container"></div>
+    <!-- Filter.js рендерит фильтр по автору сюда -->
+    <div id="filter-container"></div>
+  </section>
+
+  <main class="main-layout">
+    <section class="results-section">
+      <p class="results-title" id="results-title"></p>
+      <!-- BookCard.js рендерит карточки сюда -->
+      <div class="books-grid" id="books-grid" aria-live="polite"></div>
+    </section>
+
+    <!-- Favorites.js рендерит сайдбар сюда -->
+    <div id="favorites-container"></div>
+  </main>
+
+  <footer class="footer">
+    Powered by
+    <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
