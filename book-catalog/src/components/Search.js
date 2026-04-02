@@ -5,7 +5,7 @@
  */
 
 import { debounce } from '../utils/debounce.js';
-
+import searchIcon from '../assets/search.svg';
 /**
  * @param {HTMLElement} container  - where to render the search bar
  * @param {Function}    onSearch   - callback(query: string)
@@ -15,7 +15,7 @@ export function initSearch(container, onSearch) {
   container.innerHTML = `
     <div class="search-bar" role="search">
       <span class="search-bar__icon">
-        <img src="./assets/search.svg" alt="" width="16" height="16" />
+        <img src="${searchIcon}" alt="" width="16" height="16" />
       </span>
       <input
         class="search-bar__input"
