@@ -4,6 +4,8 @@ import { resolve } from 'path';
 export default defineConfig({
   root: '.',
 
+  base: './',
+
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
@@ -27,7 +29,6 @@ export default defineConfig({
     },
 
     assetsInlineLimit: 0,
-
     cssCodeSplit: false,
   },
 });
