@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://openlibrary.org/:splat"
+  status = 200
+  force = true

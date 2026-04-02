@@ -4,7 +4,8 @@
  * No business logic here — only fetch calls and URL builders.
  */
 
-const BASE_URL  = 'https://openlibrary.org';
+// const BASE_URL  = 'https://openlibrary.org'; pre-prod if you need it to test uncomment and comment prod
+const BASE_URL  = '/api'; //  FIX CORS prod
 const COVER_URL = 'https://covers.openlibrary.org/b/id';
 
 /**
@@ -53,7 +54,7 @@ async function fetchWithRetry(url, retries = 2, delay = 500) {
 export async function searchBooks(query, limit = 24) {
   const trimmed = query.trim();
 
-  if (trimmed.length < 2) throw new alert('Query too short');
+  if (trimmed.length < 2) throw new Error('Query too short');
 
   const url = `${BASE_URL}/search.json?q=${encodeURIComponent(trimmed)}&limit=${limit}&fields=key,title,author_name,first_publish_year,cover_i`;
 
