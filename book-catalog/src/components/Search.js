@@ -15,7 +15,7 @@ export function initSearch(container, onSearch) {
   container.innerHTML = `
     <div class="search-bar" role="search">
       <span class="search-bar__icon">
-        <img src="src/assets/search.svg" alt="" width="16" height="16" />
+        <img src="/assets/search.svg" alt="" width="16" height="16" />
       </span>
       <input
         class="search-bar__input"
