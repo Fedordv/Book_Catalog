@@ -4,9 +4,7 @@
  * No business logic here — only fetch calls and URL builders.
  */
 
-// const BASE_URL  = 'https://openlibrary.org'; pre-prod if you need it to test uncomment and comment prod
-// FIX CORS prod: на Netlify прямой вызов Open Library API
-const BASE_URL  = 'https://openlibrary.org';
+const BASE_URL = '/.netlify/functions/search'; 
 const COVER_URL = 'https://covers.openlibrary.org/b/id';
 
 /**
@@ -37,7 +35,7 @@ async function fetchWithRetry(url, retries = 2, delay = 500) {
       const isServerError = err.message.includes('500')
         || err.message.includes('503');
 
-      // we throw on server errors and the last attempt
+      // we throw on server errors и на последней попытке
       if (isServerError || i === retries - 1) throw err;
 
       await new Promise(res => setTimeout(res, delay));
@@ -51,13 +49,12 @@ async function fetchWithRetry(url, retries = 2, delay = 500) {
  * @param {number} limit - max results to fetch
  * @returns {Promise<Array>} array of book objects
  */
-
 export async function searchBooks(query, limit = 24) {
   const trimmed = query.trim();
 
   if (trimmed.length < 2) throw new Error('Query too short');
 
-  const url = `${BASE_URL}/search.json?q=${encodeURIComponent(trimmed)}&limit=${limit}&fields=key,title,author_name,first_publish_year,cover_i`;
+  const url = `${BASE_URL}?q=${encodeURIComponent(trimmed)}&limit=${limit}`;
 
   const response = await fetchWithRetry(url);
   const data = await response.json();
