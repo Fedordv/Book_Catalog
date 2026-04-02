@@ -4,8 +4,8 @@
  * No business logic here — only fetch calls and URL builders.
  */
 
-// const BASE_URL  = 'https://openlibrary.org'; 
-const BASE_URL  = '/api'; // FIX CORS prod  Netlify _redirects
+// Прямой доступ к Open Library
+const BASE_URL  = 'https://openlibrary.org';
 const COVER_URL = 'https://covers.openlibrary.org/b/id';
 
 /**
@@ -27,20 +27,11 @@ async function fetchWithRetry(url, retries = 2, delay = 500) {
     try {
       const response = await fetch(url);
 
-      // 500+ = the server is broken, retry cant help — exit
-      if (response.status >= 500) {
-        throw new Error(`Server error ${response.status}`);
-      }
-
       if (!response.ok) throw new Error(`API error ${response.status}`);
       return response;
 
     } catch (err) {
-      const isServerError = err.message.includes('500') || err.message.includes('503');
-
-      // we throw on server errors and the last attempt
-      if (isServerError || i === retries - 1) throw err;
-
+      if (i === retries - 1) throw err;
       await new Promise(res => setTimeout(res, delay));
     }
   }
@@ -48,19 +39,30 @@ async function fetchWithRetry(url, retries = 2, delay = 500) {
 
 /**
  * Searches books via Open Library search API.
+ * If query is empty, returns a random popular book.
  * @param {string} query - free text (title, author, keyword)
  * @param {number} limit - max results to fetch
  * @returns {Promise<Array>} array of book objects
  */
-export async function searchBooks(query, limit = 24) {
+export async function searchBooks(query = '', limit = 24) {
+  let url;
+
   const trimmed = query.trim();
 
-  if (trimmed.length < 2) throw new Error('Query too short');
-
-  // Use /api/ prefix for Netlify proxy (_redirects)
-  const url = `${BASE_URL}/search.json?q=${encodeURIComponent(trimmed)}&limit=${limit}&fields=key,title,author_name,first_publish_year,cover_i`;
+  if (trimmed.length < 2) {
+    // Если пустой запрос — берем случайную популярную книгу
+    const defaultBooks = [
+      'the hobbit', 'harry potter', 'sherlock holmes',
+      'pride and prejudice', 'lord of the rings', 'dracula'
+    ];
+    const randomQuery = defaultBooks[Math.floor(Math.random() * defaultBooks.length)];
+    url = `${BASE_URL}/search.json?q=${encodeURIComponent(randomQuery)}&limit=${limit}&fields=key,title,author_name,first_publish_year,cover_i`;
+  } else {
+    url = `${BASE_URL}/search.json?q=${encodeURIComponent(trimmed)}&limit=${limit}&fields=key,title,author_name,first_publish_year,cover_i`;
+  }
 
   const response = await fetchWithRetry(url);
   const data = await response.json();
+
   return data.docs || [];
 }
