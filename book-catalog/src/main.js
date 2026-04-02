@@ -52,19 +52,25 @@ renderFavorites(favContainer, favorites, handleRemoveFavorite);
 
 // Initial grid state
 
-const DEFAULT_QUERIES = ['tolkien', 'stephen king', 'agatha christie', 'orwell', 'hemingway', 'fitzgerald'];
-
+const DEFAULT_QUERIES = [
+  'harry potter',
+  'lord of the rings',
+  'sherlock holmes',
+  'dracula',
+  'pride and prejudice',
+  'the hobbit'
+];
 
 async function loadDefaultCatalog() {
   showStatus('loading');
   try {
     const picked = DEFAULT_QUERIES
       .sort(() => Math.random() - 0.5)
-      .slice(0, 2);
+      .slice(0, 3);
 
     // Promise.allSettled istead of Promise.all
     const results = await Promise.allSettled(
-      picked.map(q => searchBooks(q, 12))
+      picked.map(q => searchBooks(q, 20))
     );
 
     // take only successful results
@@ -89,12 +95,8 @@ loadDefaultCatalog();
 
 /** Called by Search.js when user submits a query */
 async function handleSearch(query) {
-   if (!query.trim() || query.trim().length < 2) {
-    if (allResults.length > 0) {
-      renderGrid(allResults);
-    } else {
-      loadDefaultCatalog();
-    }
+  if (!query.trim() || query.trim().length < 2) {
+    allResults.length > 0 ? renderGrid(allResults) : loadDefaultCatalog();
     return;
   }
 
@@ -106,7 +108,11 @@ async function handleSearch(query) {
     allResults = await searchBooks(query, 24);
     renderGrid(allResults);
   } catch (err) {
-    showStatus('error', err.message);
+    if (err.message.includes('503')) {
+      showStatus('error', 'Open Library is temporarily unavailable. Try again in a moment.');
+    } else {
+      showStatus('error', err.message);
+    }
   }
 }
 

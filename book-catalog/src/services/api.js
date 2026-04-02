@@ -18,16 +18,27 @@ export function getCoverUrl(coverId, size = 'M') {
   return `${COVER_URL}/${coverId}-${size}.jpg`;
 }
 
-async function fetchWithRetry(url, retries = 3, delay = 1000) {
+async function fetchWithRetry(url, retries = 2, delay = 500) {
   for (let i = 0; i < retries; i++) {
     try {
       const response = await fetch(url);
+
+      // 500+ = the server is broken, retry cant help — exit
+      if (response.status >= 500) {
+        throw new Error(`Server error ${response.status}`);
+      }
+
       if (!response.ok) throw new Error(`API error ${response.status}`);
       return response;
+
     } catch (err) {
-      const isLast = i === retries - 1;
-      if (isLast) throw err; // last try — throw error
-      await new Promise(res => setTimeout(res, delay)); // waiting before the next
+      const isServerError = err.message.includes('500')
+        || err.message.includes('503');
+
+      // we throw on server errors and the last attempt
+      if (isServerError || i === retries - 1) throw err;
+
+      await new Promise(res => setTimeout(res, delay));
     }
   }
 }

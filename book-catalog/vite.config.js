@@ -3,25 +3,31 @@ import { resolve } from 'path';
 
 export default defineConfig({
   root: '.',
+
   build: {
     outDir: 'dist',
+    assetsDir: 'assets',
+
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
       },
+
       output: {
-        // Весь JS → один бандл
-        entryFileNames: 'bundle.[hash].js',
-        chunkFileNames: 'bundle.[hash].js',
-        // Иконки и CSS → папка assets/
+        entryFileNames: 'main.js',
+        chunkFileNames: 'main.js',
+
         assetFileNames: (assetInfo) => {
-          if (/\.(svg|png|jpg|ico)$/.test(assetInfo.name)) {
+          if (/\.(svg|png|jpg|jpeg|ico)$/.test(assetInfo.name)) {
             return 'assets/icons/[name][extname]';
           }
-          return 'assets/[name].[hash][extname]';
+          return 'assets/[name][extname]';
         },
       },
     },
-    assetsInlineLimit: 0, // SVG не инлайним — оставляем файлами
+
+    assetsInlineLimit: 0,
+
+    cssCodeSplit: false,
   },
 });
