@@ -5,7 +5,8 @@
  */
 
 // const BASE_URL  = 'https://openlibrary.org'; pre-prod if you need it to test uncomment and comment prod
-const BASE_URL  = '/api'; //  FIX CORS prod
+// FIX CORS prod: на Netlify прямой вызов Open Library API
+const BASE_URL  = 'https://openlibrary.org';
 const COVER_URL = 'https://covers.openlibrary.org/b/id';
 
 /**
