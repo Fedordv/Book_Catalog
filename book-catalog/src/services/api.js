@@ -26,8 +26,8 @@ async function fetchWithRetry(url, retries = 3, delay = 1000) {
       return response;
     } catch (err) {
       const isLast = i === retries - 1;
-      if (isLast) throw err; // последняя попытка — пробрасываем ошибку
-      await new Promise(res => setTimeout(res, delay)); // ждём перед следующей
+      if (isLast) throw err; // last try — throw error
+      await new Promise(res => setTimeout(res, delay)); // waiting before the next
     }
   }
 }

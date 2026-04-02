@@ -22,9 +22,7 @@ import { initTheme }                          from './components/Theme.js';
 import { createBookCard, updateCardFavState } from './components/BookCard.js';
 import { renderFavorites }                    from './components/Favorites.js';
 
-// ─────────────────────────────────────────────
 // DOM containers (declared in index.html)
-// ─────────────────────────────────────────────
 const searchContainer   = document.getElementById('search-container');
 const filterContainer   = document.getElementById('filter-container');
 const themeContainer    = document.getElementById('theme-toggle-container');
@@ -32,42 +30,30 @@ const favContainer      = document.getElementById('favorites-container');
 const booksGrid         = document.getElementById('books-grid');
 const resultsTitle      = document.getElementById('results-title');
 
-// ─────────────────────────────────────────────
 // Application state
-// ─────────────────────────────────────────────
 let favorites   = loadFavorites(); // Array<book> — persisted in localStorage
 let allResults  = [];              // Array<book> — last API response
 let authorQuery = '';              // string — current author filter value
 
-// ─────────────────────────────────────────────
 // Theme
-// ─────────────────────────────────────────────
 initTheme(themeContainer);
 
-// ─────────────────────────────────────────────
 // Search
-// ─────────────────────────────────────────────
 initSearch(searchContainer, handleSearch);
 
-// ─────────────────────────────────────────────
 // Author filter (bonus feature)
-// ─────────────────────────────────────────────
 initFilter(filterContainer, (query) => {
   authorQuery = query;
   renderGrid(allResults); // re-filter already loaded results, no new fetch
 });
 
-// ─────────────────────────────────────────────
 // Favorites — initial render
-// ─────────────────────────────────────────────
 renderFavorites(favContainer, favorites, handleRemoveFavorite);
 
-// ─────────────────────────────────────────────
 // Initial grid state
-// ─────────────────────────────────────────────
+
 const DEFAULT_QUERIES = ['tolkien', 'stephen king', 'agatha christie', 'orwell', 'hemingway', 'fitzgerald'];
 
-// 
 
 async function loadDefaultCatalog() {
   showStatus('loading');
@@ -76,13 +62,12 @@ async function loadDefaultCatalog() {
       .sort(() => Math.random() - 0.5)
       .slice(0, 2);
 
-    // Promise.allSettled вместо Promise.all —
-    // не падает если один из запросов не удался
+    // Promise.allSettled istead of Promise.all
     const results = await Promise.allSettled(
       picked.map(q => searchBooks(q, 12))
     );
 
-    // Берём только успешные результаты
+    // take only successful results
     allResults = results
       .filter(r => r.status === 'fulfilled')
       .flatMap(r => r.value)
@@ -98,16 +83,13 @@ async function loadDefaultCatalog() {
   }
 }
 
-loadDefaultCatalog(); // ← теперь вызывается ПОСЛЕ того как все переменные объявлены
+loadDefaultCatalog(); 
 
-// ═════════════════════════════════════════════
 // Handlers
-// ═════════════════════════════════════════════
 
 /** Called by Search.js when user submits a query */
 async function handleSearch(query) {
    if (!query.trim() || query.trim().length < 2) {
-    // Если есть загруженные результаты — просто перефильтруй их
     if (allResults.length > 0) {
       renderGrid(allResults);
     } else {
@@ -131,7 +113,6 @@ async function handleSearch(query) {
 initFilter(filterContainer, async (query) => {
   authorQuery = query;
 
-  // Если результатов нет (поисковая строка пуста) — ищем по автору через API
   if (allResults.length === 0 && query.trim().length >= 2) {
     showStatus('loading');
     try {
@@ -177,9 +158,7 @@ function handleRemoveFavorite(key) {
   });
 }
 
-// ═════════════════════════════════════════════
 // Rendering helpers
-// ═════════════════════════════════════════════
 
 /**
  * Renders the books grid.

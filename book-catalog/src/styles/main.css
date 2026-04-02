@@ -249,12 +249,17 @@ body {
   gap: 24px;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 24px 60px;
+  padding: 32px 24px 40px;
   align-items: flex-start;
 }
 
 /* ─── Results section ─── */
-.results-section { flex: 1; min-width: 0; }
+.results-section { 
+  flex: 1; 
+  min-width: 800px; 
+  overflow: scroll;
+  max-height: 700px;
+}
 
 .results-title {
   font-size: 12px;
@@ -271,8 +276,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 16px;
-  overflow: scroll;
-  max-height: 600px;
 }
 
 /* ─── Book card ─── */
@@ -306,7 +309,9 @@ body {
   transition: transform 0.35s ease;
 }
 
-.book-card:hover .book-card__cover { transform: scale(1.04); }
+.book-card:hover .book-card__cover { 
+  transform: scale(1.04); 
+}
 
 .book-card__no-cover {
   width: 100%;
@@ -538,6 +543,8 @@ body {
   font-size: 12px;
   color: var(--color-text-light);
   border-top: 1px solid var(--color-border);
+  position: sticky;
+  bottom: 0;
 }
 
 .footer a { color: var(--color-primary); text-decoration: none; }
