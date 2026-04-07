@@ -304,7 +304,7 @@ body {
 /* ─── Results section ─── */
 .results-section {
   flex: 1;
-  min-width: 0; /* fix — убирает min-width: 950px которая ломала адаптив */
+  min-width: 0; 
 }
 
 .results-title {
@@ -322,7 +322,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
   gap: 20px;
-  /* убираем overflow: scroll и max-height — это ломало лэйаут */
 }
 
 /* ─── Book card ─── */
@@ -593,7 +592,7 @@ body {
   text-align: center;
   padding: 80px 20px;
   color: var(--color-text-muted);
-  grid-column: 1 / -1; /* занимает всю ширину грида */
+  grid-column: 1 / -1; 
 }
 
 .status-msg--loading .spinner {
