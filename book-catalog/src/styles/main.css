@@ -411,7 +411,6 @@ body {
 
 .book-card__fav-btn.is-fav .heart-icon {
   fill: #c0392b;
-  /* маленький pop эффект при добавлении */
   transform: scale(1.1);
 }
 
@@ -634,7 +633,6 @@ body {
   font-size: 12px;
   color: var(--color-text-light);
   border-top: 1px solid var(--color-border);
-  /* убираем position: sticky — футер не должен быть sticky */
   letter-spacing: 0.02em;
 }
 
